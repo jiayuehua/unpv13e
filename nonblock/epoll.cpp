@@ -135,20 +135,20 @@ main (int argc, char *argv[])
 
       n = epoll_wait (efd, events, MAXEVENTS, -1);
       for (i = 0; i < n; i++)
-	{
-	  if ((events[i].events & EPOLLERR) ||
+  {
+    if ((events[i].events & EPOLLERR) ||
               (events[i].events & EPOLLHUP) ||
               (!(events[i].events & EPOLLIN)))
-	    {
+      {
               /* An error has occured on this fd, or the socket is not
                  ready for reading (why were we notified then?) */
-	      fprintf (stderr, "epoll error\n");
-	      close (events[i].data.fd);
-	      continue;
-	    }
+        fprintf (stderr, "epoll error\n");
+        close (events[i].data.fd);
+        continue;
+      }
 
-	  else if (sfd == events[i].data.fd)
-	    {
+    else if (sfd == events[i].data.fd)
+      {
               /* We have a notification on the listening socket, which
                  means one or more incoming connections. */
               while (1)
