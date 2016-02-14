@@ -15,7 +15,7 @@ main(int argc, char **argv)
   bzero(&servaddr, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(7);
-  Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
+  inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 
   Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
 
