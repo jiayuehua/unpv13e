@@ -10,11 +10,9 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 
     Sendto(sockfd, sendline, strlen(sendline), 0, pservaddr, servlen);
 
-/*
- *    n = Recvfrom(sockfd, recvline, MAXLINE, 0, NULL, NULL);
- *
- *    recvline[n] = 0;  [> null terminate <]
- *    Fputs(recvline, stdout);
- */
+    n = Recvfrom(sockfd, recvline, MAXLINE, 0, NULL, NULL);
+
+    recvline[n] = 0;  /* null terminate */
+    Fputs(recvline, stdout);
   }
 }

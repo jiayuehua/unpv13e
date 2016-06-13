@@ -52,6 +52,14 @@ Fcntl(int fd, int cmd, int arg)
   return(n);
 }
 
+void
+Gettimeofday(struct timeval *tv, void *foo)
+{
+  if (gettimeofday(tv, (struct timezone*)foo) == -1)
+    err_sys("gettimeofday error");
+  return;
+}
+
 int
 Ioctl(int fd, int request, void *arg)
 {
@@ -91,7 +99,7 @@ Mkstemp(char *tem)
   if ((i = mkstemp(tem)) < 0)
     err_quit("mkstemp error");
 #else
-  if (mktemp(tem) == NULL || template[0] == 0)
+  if (mktemp(tem) == NULL || tem[0] == 0)
     err_quit("mktemp error");
   i = Open(tem, O_CREAT | O_WRONLY, FILE_MODE);
 #endif

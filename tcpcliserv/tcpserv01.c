@@ -1,7 +1,5 @@
 #include  "unp.h"
-enum {
-  LEN = 10
-};
+
 int
 main(int argc, char **argv)
 {
@@ -23,33 +21,13 @@ main(int argc, char **argv)
 
   for ( ; ; ) {
     clilen = sizeof(cliaddr);
-Again2:
     connfd = Accept(listenfd, (SA *) &cliaddr, &clilen);
 
-    printf ("Accept\n");
-  ssize_t   n = 0;
-  char    buf[MAXLINE+1];
-
-again:
-  while ( (n = read(connfd, buf, LEN)) > 0)
-  {
-
-    Writen(connfd, buf, n);
-    buf[n+1] = 0;
-    printf ("%d: buf: %s\n", n , buf);
+    if ( (childpid = Fork()) == 0) {  /* child process */
+      Close(listenfd);  /* close listening socket */
+      str_echo(connfd); /* process the request */
+      exit(0);
+    }
     Close(connfd);      /* parent closes connected socket */
-    printf ("close connfd\n");
-    goto Again2;
-
-  }
-
-  if (n < 0 && errno == EINTR)
-    goto again;
-  else if (n < 0)
-    err_sys("str_echo: read error");
-
-    printf ("close connfd");
-    Close(connfd);      /* parent closes connected socket */
-    //Close(listenfd);      /* parent closes connected socket */
   }
 }
